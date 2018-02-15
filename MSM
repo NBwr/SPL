@@ -1,20 +1,16 @@
 # Middle Square Method
 # Following code consists of three approaches towards the MSM-algorithm
 
-# 1st one, takes only 6-digit long seeds as an input
 
-msm = function(my_seed, n){
-  rangeit = vector(length = n)
-  for(i in 1:n){
-    my_seed = my_seed * my_seed
-    my_seed = str_pad(my_seed, 12, pad = "0")
-    my_seed = as.numeric(strsplit(my_seed,"")[[1]])
-    if(length(my_seed) == 12){
-      my_seed = my_seed[4:9]    
-    } 
-    rangeit[i] = my_seed = as.numeric(paste(my_seed, sep = "", collapse = ""))
-  }
-  return(rangeit)
+msm = function(seed, n){
+  a = nchar(seed)
+  empty.vec = NULL
+  for(i in 1:n) {
+    seedseed = seed^2
+    seed = (seedseed %/% 10^(a/2)) %% 10^a
+    empty.vec = c(empty.vec, seed)
+  }   
+  return(empty.vec)
 }
 
 
