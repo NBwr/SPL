@@ -73,6 +73,9 @@ timecheck.PRNG = function(input = nmbrs, n = length(input)){
     d1[i] <<- d
   }
 }
+
+timecheck.PRNG()
+
 plot(a1, type = "b", # Plots the outcomes from the msm function
      main = "Performance check", # Title
      col = "red", # Colour of the line
@@ -111,6 +114,8 @@ timecheck.PRNG = function(input = nmbrs, n = length(input)){
     d1[i] <<- d
   }
 }
+
+timecheck.PRNG()
 
 plot(b1, type = "b", 
      main = "Performance check", 
