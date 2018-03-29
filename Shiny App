@@ -1,0 +1,121 @@
+n = 1000
+x = 1
+Seed = 654321
+
+mcg.lehmer = function(n, a = 48271, m = 2147483647){
+  Rnumb.out = vector(length = n)
+  rnum = as.numeric(Sys.time())
+  for(i in 1:n){
+    rnum = (a * rnum) %% m
+    Rnumb.out[i] = rnum/m
+  }
+  return(Rnumb.out)
+}
+
+
+LFG = function(n, j = 7, k = 10, m = 2147483647,
+               Seed = c(4,8,2,8,3,9,1,8,7,1)){ 
+  gn.out = NULL
+  for(i in 0:n){
+    Output = (Seed[j+i] + Seed[k+i]) %% m
+    i = i + 1
+    Seed = append(Seed, Output)
+    gn.out[i] = Output
+  }
+  return(gn.out)
+}
+
+msm = function(Seed, n){
+  a = nchar(Seed)
+  b = nchar(Seed)/2
+  empty.vec = NULL
+  for(i in 1:n) {
+    Seedseed = Seed^2
+    Seed = (Seedseed %/% 10^b) %% 10^a
+    empty.vec = c(empty.vec, Seed)
+  }  
+  return(empty.vec)
+}
+
+ui = fluidPage(
+  titlePanel("PRNG"),                  # Header
+  sidebarLayout(      
+    sidebarPanel(                      # Creates the sidebar
+      checkboxInput("check",           # Creates the checkbox  
+                    "Lehmer RNG",      # Displays the name
+                    value = FALSE),    # Not clicked by default
+      checkboxInput("check1",          # inputID = check1
+                                       # is used for the server
+                    "Lagged Fibonacci Generator",
+                    value = FALSE),
+      checkboxInput("check2",
+                    "Mersenne-Twister",
+                    value = FALSE),
+      checkboxInput("check3",
+                    "Middle-square method", 
+                    value = FALSE),
+      helpText("Note: In order to store 
+the pseudorandom numbers in a variable for a PRNG,
+check the box and click on the respective panel."),
+      numericInput('n', #Quantity of generated numbers can be entered
+                   'Generated numbers',
+                   n, step = 100), # n is pre-defined as 1000 
+      numericInput('x', # Changes the plots point sizes
+                   'Visibility',
+                   x, step = 0.05),    # set to 1 by default  
+      numericInput('Seed', # The seed is needed for the msm function
+                   'Seed (only for MSM)',
+                   Seed)),
+    mainPanel(
+      tabsetPanel( # Four different panels, for each PRNG one
+      tabPanel("Lehmer RNG", plotOutput("plot")), 
+      tabPanel("LFG", plotOutput("plot1")),
+      tabPanel("Mersenne-Twister", plotOutput("plot2")),
+      tabPanel("MSM", plotOutput("plot3"))
+  ))))
+
+
+server = function(input, output) {
+  output$plot = renderPlot({
+    plot(mcg.lehmer(input$n), type = "p", 
+         main = "Lehmer RNG", 
+         xlab = "Generated random numbers", # Name of the x-axis
+         ylab = "Interval",                 # Name of the y-axis
+         cex = input$x)           # Changes the plots point sizes
+    if(input$check){ # If the Lehmer RNG box is checked, 
+                     # n pseudorandom numbers are generated 
+                     # and stored globally (<<-) as Rnd.MCG 
+      Rnd.MCG <<- mcg.lehmer(input$n) 
+    } 
+  })
+  output$plot1 = renderPlot({
+    plot(LFG(input$n), type = "p",
+         main = "Lagged Fibonacci Generator", 
+         xlab = "Generated random numbers",
+         ylab = "Interval", cex = input$x)
+    if(input$check1){
+      Rnd.LFG <<- LFG(input$n)
+    }
+  })
+  output$plot2 = renderPlot({
+    plot(runif(input$n), type = "p", 
+         main = "Mersenne-Twister",
+         xlab = "Generated random numbers", 
+         ylab = "Interval", cex = input$x)
+    if(input$check2){
+      Rnd.MT <<- runif(input$n)
+    }
+  })
+  output$plot3 = renderPlot({
+    plot(msm(input$Seed ,input$n), type = "p", 
+         main = "Middle-square Method",
+         xlab = "Generated random numbers", 
+         ylab = "Interval", cex = input$x)
+    if(input$check3){
+      Rnd.MSM <<- msm(input$Seed, input$n)
+    }
+  })
+}
+
+
+shinyApp(ui = ui, server = server)
