@@ -41,22 +41,28 @@ ui = fluidPage(
   titlePanel("PRNG"),                  # Header
   sidebarLayout(      
     sidebarPanel(                      # Creates the sidebar
+      helpText("If checked, 
+               the numbers are stored as"),
       checkboxInput("check",           # Creates the checkbox  
                     "Lehmer RNG",      # Displays the name
                     value = FALSE),    # Not clicked by default
+      helpText("Rnd.MCG"),
       checkboxInput("check1",          # inputID = check1
-                                       # is used for the server
+                    # is used for the server
                     "Lagged Fibonacci Generator",
                     value = FALSE),
+      helpText("Rnd.LFG"),
       checkboxInput("check2",
                     "Mersenne-Twister",
                     value = FALSE),
+      helpText("Rnd.MT"),
       checkboxInput("check3",
                     "Middle-square method", 
                     value = FALSE),
-      helpText("Note: In order to store 
-the pseudorandom numbers in a variable for a PRNG,
-check the box and click on the respective panel."),
+      helpText("Rnd.MSM"),
+      helpText("Note: Additionally to checking the box, 
+                the respective panel has to be clicked, 
+                in order to store the numbers"),
       numericInput('n', #Quantity of generated numbers can be entered
                    'Generated numbers',
                    n, step = 100), # n is pre-defined as 1000 
@@ -68,11 +74,11 @@ check the box and click on the respective panel."),
                    Seed)),
     mainPanel(
       tabsetPanel( # Four different panels, for each PRNG one
-      tabPanel("Lehmer RNG", plotOutput("plot")), 
-      tabPanel("LFG", plotOutput("plot1")),
-      tabPanel("Mersenne-Twister", plotOutput("plot2")),
-      tabPanel("MSM", plotOutput("plot3"))
-  ))))
+        tabPanel("Lehmer RNG", plotOutput("plot")), 
+        tabPanel("LFG", plotOutput("plot1")),
+        tabPanel("Mersenne-Twister", plotOutput("plot2")),
+        tabPanel("MSM", plotOutput("plot3"))
+      ))))
 
 
 server = function(input, output) {
