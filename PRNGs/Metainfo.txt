@@ -1,0 +1,13 @@
+Name of Quantlet: PRNGs
+
+Published in:      
+  
+Description: Different functions for creating random numbers and plots.
+ 
+Keywords: random numbers, shiny app, plots, performance 
+
+See also: Randnmbrs.shiny
+
+Author: Nikolaj Bewer
+  
+Submitted: Fri, March 30 2018 by Nikolaj Bewer
