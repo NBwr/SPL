@@ -8,7 +8,7 @@ Description: Different functions for creating random numbers, includes Shiny App
  
 Keywords: random numbers, shiny app, plots, performance 
 
-See also:
+See also: PRNGs
 
 Author: Nikolaj Bewer
   
