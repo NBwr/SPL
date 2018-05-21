@@ -4,13 +4,13 @@
 # The Middle-square method
 msm = function(Seed, n) {
     # Seed is not provided, n is the number of PRN
-    a = nchar(Seed)  # Number of integers  
-    b = nchar(Seed)/2  # Number of integers divided by two
-    empty.vec = NULL  # Initializes vector
+    a = nchar(Seed)  
+    b = nchar(Seed)/2  
+    empty.vec = NULL  
     for (i in 1:n) {
-        Seedseed = Seed^2  # Middle-square method (1st part) 
-        Seed = (Seedseed%/%10^b)%%10^a  # Extracting digits in the middle (2nd part)
-        empty.vec = c(empty.vec, Seed)  # Appending Seed to vector (as it is reused)
+        Seedseed  = Seed^2  
+        Seed      = (Seedseed%/%10^b)%%10^a  
+        empty.vec = c(empty.vec, Seed)  
     }
     return(empty.vec)
 }
@@ -18,29 +18,24 @@ msm = function(Seed, n) {
 
 # The Lehmer number generator
 mcg.lehmer = function(n, a = 48271, m = 2147483647) {
-    # a (the multiplier) and m (the modulo) are set by default, but may be changed
-    Rnumb.out = vector(length = n)  # Initializes Rnumb.out
-    Rnum = as.numeric(Sys.time())  # Provides a seed
+    Rnum      = as.numeric(Sys.time()) 
+    Rnumb.out = vector(length = n)  
     for (i in 1:n) {
-        # For loop which runs n times
-        Rnum = (a * Rnum)%%m
-        Rnumb.out[i] = Rnum/m  # Saves the generated pseudorandom number in initialized vector
-        # Rnum is divided by m, to get a number on the [0,1] interval
+        Rnum         = (a * Rnum)%%m
+        Rnumb.out[i] = Rnum/m 
     }
-    return(Rnumb.out)  # After the loop ran n times, the function returns the vector
+    return(Rnumb.out) 
 }
 
 
 # The Lagged Fibonacci Generator
 LFG = function(n, j = 7, k = 10, m = 2147483647, Seed = c(4, 8, 2, 8, 3, 9, 1, 8, 7, 1)) {
-    # All set by default, except n; Seed must be splitted single-digits
     gn.out = NULL  # Initializes gn.out
     for (i in 0:n) {
-        # For loop running n times, starts at zero
-        Output = (Seed[j + i] + Seed[k + i])%%m  # The Fibonacci Lagged Process
-        i = i + 1  # Counter increasing by one
-        Seed = append(Seed, Output)  # Appends Output, as it is used
-        gn.out[i] = Output  # Adds the pseudorandom number to the output vector
+        Output    = (Seed[j + i] + Seed[k + i])%%m  
+        i         = i + 1  
+        Seed      = append(Seed, Output)  
+        gn.out[i] = Output  
     }
-    return(gn.out)  # After loop ran n+1 times, returns PRN
+    return(gn.out)  
 }
