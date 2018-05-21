@@ -1,7 +1,17 @@
-# SPL
+```yaml
 
-# Figures: All plots, figures and calculations
+Name of Quantlet: Randnmbrs
 
-# Pseudorandom Number Generators: Code for the pseudorandom number generators
+Published in:      
+  
+Description: Different functions for creating random numbers, includes Shiny App.
+ 
+Keywords: random numbers, shiny app, plots, performance 
 
-# Shiny App: The Shiny app, (both ui and server)
+See also:
+
+Author: Nikolaj Bewer
+  
+Submitted: Fri, March 30 2018 by Nikolaj Bewer
+
+```
