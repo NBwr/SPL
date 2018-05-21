@@ -1,6 +1,6 @@
 ```yaml
 
-Name of Quantlet: Randnmbrs
+Name of Quantlet: Randnmbrs.shiny
 
 Published in:      
   
