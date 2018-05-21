@@ -2,7 +2,7 @@ Name of Quantlet: Randnmbrs
 
 Published in:      
   
-Description: Different functions for creating random numbers, includes Shiny App
+Description: Different functions for creating random numbers, includes Shiny App.
  
 Keywords: random numbers, shiny app, plots, performance 
 
