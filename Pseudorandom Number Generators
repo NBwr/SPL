@@ -2,58 +2,45 @@
 
 
 # The Middle-square method
-
-msm = function(Seed, n){
-  a = nchar(Seed)
-  b = nchar(Seed)/2
-  empty.vec = NULL
-  for(i in 1:n) {
-    Seedseed = Seed^2
-    Seed = (Seedseed %/% 10^b) %% 10^a
-    empty.vec = c(empty.vec, Seed)
-  }  
-  return(empty.vec)
+msm = function(Seed, n) {
+    # Seed is not provided, n is the number of PRN
+    a = nchar(Seed)  # Number of integers  
+    b = nchar(Seed)/2  # Number of integers divided by two
+    empty.vec = NULL  # Initializes vector
+    for (i in 1:n) {
+        Seedseed = Seed^2  # Middle-square method (1st part) 
+        Seed = (Seedseed%/%10^b)%%10^a  # Extracting digits in the middle (2nd part)
+        empty.vec = c(empty.vec, Seed)  # Appending Seed to vector (as it is reused)
+    }
+    return(empty.vec)
 }
 
-#########################################################
 
 # The Lehmer number generator
-
-mcg.lehmer = function(n, a = 48271, m = 2147483647){  # a (the multiplier) and m (the modulo) are set by default, but may be changed 
-  Rnumb.out = vector(length = n)  # Initializes Rnumb.out (makes the code run faster)
-  Rnum = as.numeric(Sys.time())   # Provides a seed
-  for(i in 1:n){                  # For loop which runs n times
-    Rnum = (a * Rnum) %% m        # The 'actual' process 
-    Rnumb.out[i] = Rnum/m         # Saving the generated pseudorandom number in a initialized vector (rnum is divided by m, to get a random number on the [0,1] interval
-  }
-  return(Rnumb.out)               # After the loop ran n times, the function returns the vector
+mcg.lehmer = function(n, a = 48271, m = 2147483647) {
+    # a (the multiplier) and m (the modulo) are set by default, but may be changed
+    Rnumb.out = vector(length = n)  # Initializes Rnumb.out
+    Rnum = as.numeric(Sys.time())  # Provides a seed
+    for (i in 1:n) {
+        # For loop which runs n times
+        Rnum = (a * Rnum)%%m
+        Rnumb.out[i] = Rnum/m  # Saves the generated pseudorandom number in initialized vector
+        # Rnum is divided by m, to get a number on the [0,1] interval
+    }
+    return(Rnumb.out)  # After the loop ran n times, the function returns the vector
 }
 
-#########################################################
 
 # The Lagged Fibonacci Generator
-
-LFG = function(n, j = 7, k = 10, m = 2147483647, Seed = c(4,8,2,8,3,9,1,8,7,1)){ # All set by default, except n; Seed must be splitted single-digits
-  gn.out = NULL                                   # Initialized so the code runs faster
-  for(i in 0:n){                                  # For loop running n times, starts at zero
-    Output = (Seed[j+i] + Seed[k+i]) %% m         # The Fibonacci Lagged Process
-    i = i + 1                                     # Counter increasing by one
-    Seed = append(Seed, Output)                   # Appends the new generated number to the seed, as the number is going to be used
-    gn.out[i] = Output                            # Simply adds the pseudorandom number to the output vector
-  }
-  return(gn.out)                                  # After loop ran n+1 times, outputs the 
+LFG = function(n, j = 7, k = 10, m = 2147483647, Seed = c(4, 8, 2, 8, 3, 9, 1, 8, 7, 1)) {
+    # All set by default, except n; Seed must be splitted single-digits
+    gn.out = NULL  # Initializes gn.out
+    for (i in 0:n) {
+        # For loop running n times, starts at zero
+        Output = (Seed[j + i] + Seed[k + i])%%m  # The Fibonacci Lagged Process
+        i = i + 1  # Counter increasing by one
+        Seed = append(Seed, Output)  # Appends Output, as it is used
+        gn.out[i] = Output  # Adds the pseudorandom number to the output vector
+    }
+    return(gn.out)  # After loop ran n+1 times, returns PRN
 }
-
-#########################################################
-
-
-Statistical Analysis 
-
-Chi-Square test
-a = mcg.lehmer(100000)                    # Creates 100,000 pseudorandom numbers between 0 and 1
-o = table(cut(a, seq(0, 1, by = 0.01)))   # Splits the interval [0,1] into 100 equal ranges and counts the number of observations
-                                          # Should be 1,000 observations in each range (as 100,000/100 = 1,000)
-e = 1000
-sum(((o-e)^2)/e) = 82.394                 # Outputs X^2 
-                                          # Checking in the table for 99 degrees of freedom
-                                          # 82.394 < 123,23 H_0 cannot be rejected, mcg.lehmer is uniform distribution
